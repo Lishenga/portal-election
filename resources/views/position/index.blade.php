@@ -7,7 +7,7 @@
     <link href="{{asset('admin/assets/plugins/datatables/responsive.bootstrap4.min.css')}}" rel="stylesheet" type="text/css" />
 @stop
 @section('title')
-    Customers
+    Election
 @stop
 @section('content')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -46,18 +46,17 @@
             <div class="container-fluid">
                 
                 <!-- Page-Title -->
-
                 <div class="row">
                 
                     <div class="col-sm-3">
 
-                        @include('users.users.layouts.create')
+                         @include('position.position.create')
 
                     </div>
 
                     <div class="col-sm-3" style="margin-left: -200px;">
 
-                        <form role="form" method="POST" action="{{url('/users/')}}" enctype="multipart/form-data">
+                        <form role="form" method="POST" action="{{url('/position/')}}" enctype="multipart/form-data">
 
                             {{ csrf_field() }}
 
@@ -77,7 +76,7 @@
 
                     <div class="col-sm-3" style="margin-left: 50px;">
 
-                        <form role="form"  method="POST" action="{{url('/users/')}}" enctype="multipart/form-data">
+                        <form role="form"  method="POST" action="{{url('/position')}}" enctype="multipart/form-data">
 
                             {{ csrf_field() }}
 
@@ -97,7 +96,7 @@
 
                     <div class="col-sm-3">
 
-                        <form role="form" method="POST" action="{{url('/users/')}}" enctype="multipart/form-data">
+                        <form role="form" method="POST" action="{{url('/position/')}}" enctype="multipart/form-data">
 
                             {{ csrf_field() }}
 
@@ -117,37 +116,23 @@
                 </div>
                
                @include('layouts.alerts')
-               @if(!isset($errors))
-                <div class="alert alert-success alert-dismissable">
-                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                    <strong>Success!</strong> Tokens already created.
-                </div>
-                @else
-                <div class="alert alert-success alert-dismissable">
-                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                    <strong>Success!</strong> Tokens Created.
-                </div>
-                @endif
+
 
                 <div class="row">
                   
                     <div class="col-md-12">
-                
                         <div class="card-box table-responsive">
-
-                            <a href="{{url('users/tokens')}}" class="btn btn-info" style='margin-left:500px'>Create Token for all users</a>
                           
                             <table id="datatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
                                 <thead>
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Phone</th>
+                                    <th>Position Name</th>
+                                    <th>Position Description</th>
+                                    <th>Election Name</th>
+                                    <th>Election Description</th>
                                     <th>Status</th>
-                                    <th>Role</th>
-                                    <th>Position</th>
                                     <th>Date Created</th>
-                                    <th>Actions</th>
+                                    <th>Action</th>
                                 </tr>
                                 </thead>
 
@@ -156,27 +141,18 @@
                                 @foreach($customers as $customer)  
                                 
                                     <tr>
-                                        <td>{{@$customer->fname }} {{@$customer->lname }}</td>
-                                        <td>{{@$customer->email }}</td>
-                                        <td>{{@$customer->msisdn }}</td>
-
+                                        <td>{{@$customer->name }}</td>
+                                        <td>{{@$customer->description }}</td>
+                                        <td> {{@$customer->delection_name }}</td>
+                                        <td> {{@$customer->delection_description }}</td>
                                         @if(@$customer->status == 1)
                                             <td>Active</td>
                                         @else
                                             <td>Inactive</td>
                                         @endif
-                                        <td>{{@$customer->role }}</td>
+                                        <td>{{@$customer->created_at }}</td>
                                         <td>
-                                        @foreach($pose as $posess)
-                                            @if(@$customer->position_id == $posess->id)
-                                                {{$posess->name}}
-                                            @endif
-                                        @endforeach
-                                        </td>
-                                        <td>{{@$customer->updated_at }}</td>
-                                        <td>
-                                            <a class="btn waves-effect waves-light btn-primary" href="{{url('users/view/details')}}?id={{$customer->id}}"> <i class="fa fa-pencil"></i></a>
-                                            <a href="{{url('/users/delete')}}?id={{$customer->id}}" onclick="alert('Are you sure you want to block {{@$customer->fname }} {{@$customer->lname }}?')" class="btn waves-effect waves-light btn-danger"> <i class="fa fa-remove"></i> </a>
+                                            <a class="btn waves-effect waves-light btn-primary" href="{{url('position/view/details')}}?id={{$customer->id}}"> <i class="fa fa-pencil"></i></a>
                                         </td>
                                     </tr>
 
@@ -202,5 +178,6 @@
                
             });
 
-            table.buttons().container().appendTo('#datatable_wrapper .col-md-6:eq(0)');</script>
+            table.buttons().container().appendTo('#datatable_wrapper .col-md-6:eq(0)');
+    </script>
 @stop

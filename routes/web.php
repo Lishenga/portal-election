@@ -44,3 +44,12 @@ Route::prefix('election')->middleware('auth')->group(function () {
     Route::get('/item/particular','Users\UsersController@particular_item');
 
 });
+
+Route::prefix('position')->middleware('auth')->group(function () {
+
+    Route::post('/','Position\PositionController@view');
+    Route::post('/create','Position\PositionController@create');
+    Route::get('/view/details','Position\PositionController@pose');
+    Route::get('/update','Position\PositionController@update');
+
+});

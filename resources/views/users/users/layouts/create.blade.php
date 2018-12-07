@@ -68,6 +68,20 @@
 
                 <div class="form-group">
 
+                    <label  for="form-username">Position<span class="text-danger">*</span></label>
+
+                    <select class="selectpicker" multiple data-max-options="10" name="position_id" data-live-search="true">
+                        <option value="0">None</option>
+                        @foreach($pose as $posess)
+                        <option value="{{$posess->id}}">{{$posess->name}}</option>
+                        @endforeach
+                        
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+
                     <label  for="form-username">Password<span class="text-danger">*</span></label>
 
                     <input type="password" name="password" placeholder="Password..." class="form-username form-control"  required parsley-type="text">

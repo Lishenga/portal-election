@@ -46,6 +46,7 @@ class UsersController extends Controller
         try{
             
             $save = ElectionRequest::post([
+                'position_id'=>$request->position_id,
                 'role'=>$request->role,
                 'fname'=>$request->fname,
                 'lname'=>$request->lname,
@@ -55,14 +56,62 @@ class UsersController extends Controller
             ],env('API_URL').'/users/createuser/');
     
             if(json_decode(json_encode($save))->status_code==500){
-                return redirect()->back()->withErrors([
-                    'error'=> 'Unexpected Error 1',
-                ]);
+                $customers = ElectionRequest::post([
+                    'page'=>1,
+                    'items'=>10,
+                ],env('API_URL').'/users/getallusers/');
+                $datas = [];
+    
+                $pose = ElectionRequest::post([
+                    'page'=>1,
+                    'items'=>10000,
+                ],env('API_URL').'/position/getallpositions/');
+     
+    
+                if($customers != null){
+                    foreach ($customers->data as $customer => $value){
+                        $datas[$customer] = $value;
+                    }
+    
+                    return view('users.users')->with([
+                        'customers'=>$datas,
+                        'pose'=>$pose->data
+                    ]);
+                }else{
+                    return view('users.users')->with([
+                        'customers'=>$datas,
+                        'pose'=>$pose->data
+                    ]);
+                }
             }
 
-            return redirect()->back()->withErrors([
-                'success'=> 'User Created',
-            ]);
+            $customers = ElectionRequest::post([
+                'page'=>1,
+                'items'=>10,
+            ],env('API_URL').'/users/getallusers/');
+            $datas = [];
+
+            $pose = ElectionRequest::post([
+                'page'=>1,
+                'items'=>10000,
+            ],env('API_URL').'/position/getallpositions/');
+ 
+
+            if($customers != null){
+                foreach ($customers->data as $customer => $value){
+                    $datas[$customer] = $value;
+                }
+
+                return view('users.users')->with([
+                    'customers'=>$datas,
+                    'pose'=>$pose->data
+                ]);
+            }else{
+                return view('users.users')->with([
+                    'customers'=>$datas,
+                    'pose'=>$pose->data
+                ]);
+            }
            
 
         }catch(\Exception $e){
@@ -166,6 +215,12 @@ class UsersController extends Controller
             ],env('API_URL').'/users/getallusers/');
             $datas = [];
 
+            $pose = ElectionRequest::post([
+                'page'=>1,
+                'items'=>10000,
+            ],env('API_URL').'/position/getallpositions/');
+ 
+
             if($customers != null){
                 foreach ($customers->data as $customer => $value){
                     $datas[$customer] = $value;
@@ -173,10 +228,12 @@ class UsersController extends Controller
 
                 return view('users.users')->with([
                     'customers'=>$datas,
+                    'pose'=>$pose->data
                 ]);
             }else{
                 return view('users.users')->with([
                     'customers'=>$datas,
+                    'pose'=>$pose->data
                 ]);
             }
         }else{
@@ -186,6 +243,11 @@ class UsersController extends Controller
             ],env('API_URL').'/users/getallusers/');
             $datas = [];
 
+            $pose = ElectionRequest::post([
+                'page'=>1,
+                'items'=>10000,
+            ],env('API_URL').'/position/getallpositions/');
+
             if($customers != null){
                 foreach ($customers->data as $customer => $value){
                     $datas[$customer] = $value;
@@ -193,10 +255,12 @@ class UsersController extends Controller
 
                 return view('users.users')->with([
                     'customers'=>$datas,
+                    'pose'=>$pose->data
                 ]);
             }else{
                 return view('users.users')->with([
                     'customers'=>$datas,
+                    'pose'=>$pose->data
                 ]);
             }
         }
@@ -221,6 +285,42 @@ class UsersController extends Controller
 
     }
 
+    public function delete(Request $request)
+    {
+        # code...
+        $data = ElectionRequest::delete([
+            'id'=>$request->id,
+        ],env('API_URL').'/users/deleteuser/');
+        
+        $customers = ElectionRequest::post([
+            'page'=>1,
+            'items'=>10,
+        ],env('API_URL').'/users/getallusers/');
+        $datas = [];
+
+        $pose = ElectionRequest::post([
+            'page'=>1,
+            'items'=>10000,
+        ],env('API_URL').'/position/getallpositions/');
+
+
+        if($customers != null){
+            foreach ($customers->data as $customer => $value){
+                $datas[$customer] = $value;
+            }
+
+            return view('users.users')->with([
+                'customers'=>$datas,
+                'pose'=>$pose->data
+            ]);
+        }else{
+            return view('users.users')->with([
+                'customers'=>$datas,
+                'pose'=>$pose->data
+            ]);
+        }
+    }
+
     public function alltokens(Request $request)
     {
         # code...
@@ -231,9 +331,15 @@ class UsersController extends Controller
                 'items'=>10,
             ],env('API_URL').'/users/getallusers/');
 
+            $pose = ElectionRequest::post([
+                'page'=>1,
+                'items'=>10000,
+            ],env('API_URL').'/position/getallpositions/');
+
             return view('users.users')->with([
                 'customers'=>$customers->data,
                 'success'=> 'Tokens already created',
+                'pose'=>$pose->data
             ]);
         }else{
             $customers = ElectionRequest::post([
@@ -241,9 +347,15 @@ class UsersController extends Controller
                 'items'=>10,
             ],env('API_URL').'/users/getallusers/');
 
+            $pose = ElectionRequest::post([
+                'page'=>1,
+                'items'=>10000,
+            ],env('API_URL').'/position/getallpositions/');
+
             return view('users.users')->with([
                 'customers'=>$customers->data,
                 'success'=> 'Tokens already created',
+                'pose'=>$pose->data
             ]);
         }
 

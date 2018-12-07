@@ -84,7 +84,19 @@ $( document ).ready(function() {
         <div class="col-xs-12 col-md-6 col-lg-6 col-xl-4">
             <div class="card-box tilebox-one">
                 <i class="fas fa-chart-bar float-right"></i>
-                <a href="{{url('/settings')}}"  class="text-uppercase m-b-20"> Settings</a>
+                <form role="form"   method="POST" action="{{url('/position/')}}" enctype="multipart/form-data">
+
+                    {{ csrf_field() }}
+
+                    <input  id="storage" type="hidden" name="page">
+
+                    <div class="modal-footer form-group">
+
+                        <button type="submit" class="btn btn-info">Positions</button>
+
+                    </div>
+
+                </form>
             </div>
         </div>
     </div>
