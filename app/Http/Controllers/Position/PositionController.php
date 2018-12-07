@@ -83,14 +83,62 @@ class PositionController extends Controller
             ],env('API_URL').'/position/createposition/');
     
             if(json_decode(json_encode($save))->status_code==500){
-                return redirect()->back()->withErrors([
-                    'error'=> 'Unexpected Error 1',
-                ]);
+                $customers = ElectionRequest::post([
+               'page'=>1,
+               'items'=>10,
+           ],env('API_URL').'/position/getallpositions/');
+
+           $cu = ElectionRequest::post([
+            'page'=>1,
+            'items'=>10000,
+            ],env('API_URL').'/election/getallelections/');
+
+           $datas = [];
+
+           if($customers != null){
+               foreach ($customers->data as $customer => $value){
+                   $datas[$customer] = $value;
+               }
+
+               return view('position.index')->with([
+                   'customers'=>$datas,
+                   'election'=>$cu->data
+               ]);
+           }else{
+               return view('position.index')->with([
+                   'customers'=>$datas,
+                   'election'=>$cu->data
+               ]);
+           }
             }
 
-            return redirect()->back()->withErrors([
-                'success'=> 'Position Created',
-            ]);
+            $customers = ElectionRequest::post([
+               'page'=>1,
+               'items'=>10,
+           ],env('API_URL').'/position/getallpositions/');
+
+           $cu = ElectionRequest::post([
+            'page'=>1,
+            'items'=>10000,
+            ],env('API_URL').'/election/getallelections/');
+
+           $datas = [];
+
+           if($customers != null){
+               foreach ($customers->data as $customer => $value){
+                   $datas[$customer] = $value;
+               }
+
+               return view('position.index')->with([
+                   'customers'=>$datas,
+                   'election'=>$cu->data
+               ]);
+           }else{
+               return view('position.index')->with([
+                   'customers'=>$datas,
+                   'election'=>$cu->data
+               ]);
+           }
            
 
         }catch(\Exception $e){
