@@ -143,8 +143,8 @@
                                     <tr>
                                         <td>{{@$customer->name }}</td>
                                         <td>{{@$customer->description }}</td>
-                                        <td> {{@$customer->delection_name }}</td>
-                                        <td> {{@$customer->delection_description }}</td>
+                                        <td> {{@$customer->election_name }}</td>
+                                        <td> {{@$customer->election_description }}</td>
                                         @if(@$customer->status == 1)
                                             <td>Active</td>
                                         @else
